@@ -1,4 +1,4 @@
-import 'dart:math';
+
 
 import 'package:codeitpractise/screens/form_screen.dart';
 import 'package:codeitpractise/widgets/task_card.dart';
@@ -13,26 +13,33 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   var dataList = [
-    {"id": "1", "title": "title1"},
-    {'id': "2", "title": "title2"}
+    {"id": "1", "title": "title1","description":"Description"},
+    {'id': "2", "title": "title2","description":"Description"}
   ];
-  void addToDataList(String data) {
+  void addToDataList(String data,desc) {
     setState(
       () {
         dataList.add(
-          {"id": DateTime.now().toString(), 
-          "title": data},
+          {"id": DateTime.now().toString(),
+           "title": data,
+          "description":desc,},
+          
+          
         );
       },
     );
   }
 
   void deletToDataList(String id) {
-    setState(() {
-     dataList.removeWhere((e) {
-      return e["id"]==id;
-     },);
-    });
+    setState(
+      () {
+        dataList.removeWhere(
+          (e) {
+            return e["id"] == id;
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -48,11 +55,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   builder: (_) {
                     return FormScreen(
                       addToList: addToDataList,
+                    
                     );
                   },
                 ),
               );
-              // addToDataList();
             },
             icon: const Icon(Icons.add),
           ),
@@ -64,9 +71,11 @@ class _HomeScreenState extends State<HomeScreen> {
           ...dataList.map(
             (e) {
               return TaskCard(
-                title:e["title"] ?? "no",
-                deletToDataList: (){
-                  deletToDataList(e["id"]??"");
+                key: ValueKey(e["id"]),
+                title: e["title"] ?? "no",
+                description:e["description"]??"" ,
+                deletToDataList: () {
+                  deletToDataList(e["id"] ?? "");
                 },
               );
             },
